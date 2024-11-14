@@ -35,11 +35,9 @@ fn main() {
     let background = parse_color(&args.background);
     let mut img = RgbImage::new(args.width, args.height);
 
-    let scale = 2.0 * (1.0 / args.height as f64) / args.zoom;
-
     for (x, y, pixel) in img.enumerate_pixels_mut() {
-        let cx = args.center_x + (x as f64 - args.width as f64 / 2.0) * scale;
-        let cy = args.center_y + (y as f64 - args.height as f64 / 2.0) * scale;
+        let cx = args.center_x + (2.0 * x as f64 - args.width as f64) / (args.height as f64 * args.zoom);
+        let cy = args.center_y + (2.0 * y as f64 - args.height as f64) / (args.height as f64 * args.zoom);
 
         let iter = mandelbrot(cx, cy, args.max_iter);
         let intensity = ((args.max_iter - iter) * 255 / args.max_iter) as u8;
