@@ -2,7 +2,7 @@ mod color;
 mod mandelbrot;
 
 use clap::Parser;
-use color::parse_color;
+use color::{parse_color, interpolate_color};
 use image::{Rgb, RgbImage};
 use mandelbrot::mandelbrot;
 
@@ -39,7 +39,9 @@ fn main() {
 
         // Map iteration count to color intensity
         let intensity = ((args.max_iter - iter) * 255 / args.max_iter) as u8;
-        *pixel = Rgb([intensity, intensity, intensity]);
+        let color = interpolate_color(color, Rgb([0, 0, 0]), intensity as f64 / 255.0);
+
+        *pixel = color;
     }
 
     img.save(args.output).expect("Failed to save image");
