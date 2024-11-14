@@ -17,8 +17,8 @@ struct Args {
     color: String, // Accepts the color as a string in "rrggbb" format
     #[arg(short = 'b', long = "background", default_value = "ffffff")]
     background: String, // Accepts the color as a string in "rrggbb" format
-    #[arg(short = 'o', long = "output", default_value = "mandelbrot.png")]
-    output: String,
+    #[arg(short = 'o', long = "output")]
+    output: Option<String>,
     #[arg(short = 'm', long = "max-iter", default_value_t = 255)]
     max_iter: u32,
     #[arg(short = 'x', long = "center_x", default_value_t = -0.5, value_parser = clap::value_parser!(f64))]
@@ -27,6 +27,15 @@ struct Args {
     center_y: f64,
     #[arg(short = 'z', long = "zoom", default_value_t = 1.0)]
     zoom: f64,
+}
+
+fn get_filename(args: &Args) -> String {
+    args.output.clone().unwrap_or_else(|| {
+        format!(
+            "mandelbrot-x={:.2}-y={:.2}-z={:.2}-{}x{}.png",
+            args.center_x, args.center_y, args.zoom, args.width, args.height
+        )
+    })
 }
 
 fn main() {
@@ -46,5 +55,5 @@ fn main() {
         *pixel = color;
     }
 
-    img.save(args.output).expect("Failed to save image");
+    img.save(get_filename(&args)).expect("Failed to save image");
 }
