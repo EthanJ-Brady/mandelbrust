@@ -1,8 +1,10 @@
 mod color;
+mod mandelbrot;
 
 use clap::Parser;
 use color::parse_color;
 use image::{Rgb, RgbImage};
+use mandelbrot::mandelbrot;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -15,22 +17,6 @@ struct Args {
     color: String,  // Accepts the color as a string in "rrggbb" format
     #[arg(short = 'o', long = "output", default_value = "mandelbrot.png")]
     output: String,
-}
-
-fn mandelbrot(cx: f64, cy: f64, max_iter: u32) -> u32 {
-    let mut x = 0.0;
-    let mut y = 0.0;
-    let mut iteration = 0;
-
-    while x * x + y * y <= 4.0 && iteration < max_iter {
-        let x_temp = x * x - y * y + cx;
-        y = 2.0 * x * y + cy;
-        x = x_temp;
-
-        iteration += 1;
-    }
-
-    iteration
 }
 
 fn main() {
