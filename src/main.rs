@@ -10,6 +10,8 @@ struct Args {
     height: u32,
     #[arg(short='C', long="color", default_value = "ff0000")]
     color: String,  // Accepts the color as a string in "rrggbb" format
+    #[arg(short='o', long="output", default_value = "mandelbrot.png")]
+    output: String,
 }
 
 fn parse_color(hex: &str) -> Rgb<u8> {
@@ -22,15 +24,11 @@ fn parse_color(hex: &str) -> Rgb<u8> {
 fn main() {
     let args = Args::parse();
     let color = parse_color(&args.color);
-
-    // Create a new image buffer with the specified dimensions
     let mut img = RgbImage::new(args.width, args.height);
 
-    // Fill the image with the color
     for pixel in img.pixels_mut() {
         *pixel = color;
     }
 
-    // Save the image to a file
-    img.save("solid_color_image.png").expect("Failed to save image");
+    img.save(args.output).expect("Failed to save image");
 }
