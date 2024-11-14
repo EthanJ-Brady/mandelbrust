@@ -17,6 +17,8 @@ struct Args {
     color: String,  // Accepts the color as a string in "rrggbb" format
     #[arg(short = 'o', long = "output", default_value = "mandelbrot.png")]
     output: String,
+    #[arg(short = 'm', long = "max-iter", default_value_t = 255)]
+    max_iter: u32,
 }
 
 fn main() {
@@ -24,7 +26,6 @@ fn main() {
     let color = parse_color(&args.color);
     let mut img = RgbImage::new(args.width, args.height);
 
-    let max_iter = 255;
     let scale_x = 3.5 / args.width as f64;  // Scale width to the Mandelbrot range
     let scale_y = 2.0 / args.height as f64; // Scale height to the Mandelbrot range
 
@@ -34,10 +35,10 @@ fn main() {
         let cy = y as f64 * scale_y - 1.0;
 
         // Get Mandelbrot iteration count
-        let iter = mandelbrot(cx, cy, max_iter);
+        let iter = mandelbrot(cx, cy, args.max_iter);
 
         // Map iteration count to color intensity
-        let intensity = (255 - iter as u8) % 255;
+        let intensity = ((args.max_iter - iter) * 255 / args.max_iter) as u8;
         *pixel = Rgb([intensity, intensity, intensity]);
     }
 
