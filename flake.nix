@@ -12,7 +12,9 @@
   {
     devShells."aarch64-darwin".default = pkgs.mkShell {
       packages = with pkgs; [
-        rustup
+        rustc
+        cargo
+        yazi
       ];
     };
   };
