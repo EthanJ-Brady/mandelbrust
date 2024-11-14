@@ -21,7 +21,7 @@ struct Args {
     output: String,
     #[arg(short = 'm', long = "max-iter", default_value_t = 255)]
     max_iter: u32,
-    #[arg(short = 'x', long = "center_x", default_value_t = 0.0, value_parser = clap::value_parser!(f64))]
+    #[arg(short = 'x', long = "center_x", default_value_t = -0.5, value_parser = clap::value_parser!(f64))]
     center_x: f64,
     #[arg(short = 'y', long = "center_y", default_value_t = 0.0, value_parser = clap::value_parser!(f64))]
     center_y: f64,
