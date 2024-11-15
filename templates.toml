@@ -1,0 +1,11 @@
+[[templates.mandelbrot]]
+x = -0.5
+y = 0.0
+z = 1.0
+m = 255
+
+[[templates.spirals]]
+x = -0.73
+y = 0.18
+z = 250
+m = 255
