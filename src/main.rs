@@ -2,15 +2,15 @@ mod args;
 mod color;
 mod file;
 mod fractal;
-mod template;
+mod fractal_template;
 
 use args::Args;
 use clap::Parser;
 use color::{interpolate_color, parse_color};
 use file::get_filename;
 use fractal::{burning_ship, mandelbrot};
+use fractal_template::get_fractal_template;
 use image::RgbImage;
-use template::get_fractal_template;
 
 fn select_fractal_function(fractal_name: &str) -> fn(f64, f64, u32) -> u32 {
     match fractal_name {
