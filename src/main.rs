@@ -1,52 +1,14 @@
+mod args;
 mod color;
+mod file;
 mod fractal;
 
+use args::Args;
 use clap::Parser;
 use color::{interpolate_color, parse_color};
+use file::get_filename;
 use fractal::{burning_ship, mandelbrot};
 use image::RgbImage;
-use std::path::Path;
-
-#[derive(Parser, Debug)]
-#[command(version, about, long_about = None)]
-struct Args {
-    #[arg(short = 'W', long = "width", default_value_t = 1920)]
-    width: u32,
-    #[arg(short = 'H', long = "height", default_value_t = 1080)]
-    height: u32,
-    #[arg(short = 'C', long = "color", default_value = "000000")]
-    color: String, // Accepts the color as a string in "rrggbb" format
-    #[arg(short = 'b', long = "background", default_value = "ffffff")]
-    background: String, // Accepts the color as a string in "rrggbb" format
-    #[arg(short = 'o', long = "output")]
-    output: Option<String>,
-    #[arg(short = 'd', long = "directory", default_value = ".")]
-    directory: String,
-    #[arg(short = 'm', long = "max-iter", default_value_t = 255)]
-    max_iter: u32,
-    #[arg(short = 'f', long = "fractal", default_value = "mandelbrot")]
-    fractal: String,
-    #[arg(short = 'x', long = "center_x", default_value_t = -0.5, value_parser = clap::value_parser!(f64))]
-    center_x: f64,
-    #[arg(short = 'y', long = "center_y", default_value_t = 0.0, value_parser = clap::value_parser!(f64))]
-    center_y: f64,
-    #[arg(short = 'z', long = "zoom", default_value_t = 1.0)]
-    zoom: f64,
-}
-
-fn get_filename(args: &Args) -> String {
-    let filename = args.output.clone().unwrap_or_else(|| {
-        format!(
-            "{}-x={:.2}-y={:.2}-z={:.2}-{}x{}.png",
-            args.fractal, args.center_x, args.center_y, args.zoom, args.width, args.height
-        )
-    });
-
-    Path::new(&args.directory)
-        .join(filename)
-        .to_string_lossy()
-        .to_string()
-}
 
 fn select_fractal_function(fractal_name: &str) -> fn(f64, f64, u32) -> u32 {
     match fractal_name {
