@@ -2,9 +2,9 @@ mod color;
 mod fractal;
 
 use clap::Parser;
-use color::{parse_color, interpolate_color};
-use image::RgbImage;
+use color::{interpolate_color, parse_color};
 use fractal::{burning_ship, mandelbrot};
+use image::RgbImage;
 use std::path::Path;
 
 #[derive(Parser, Debug)]
@@ -42,7 +42,10 @@ fn get_filename(args: &Args) -> String {
         )
     });
 
-    Path::new(&args.directory).join(filename).to_string_lossy().to_string()
+    Path::new(&args.directory)
+        .join(filename)
+        .to_string_lossy()
+        .to_string()
 }
 
 fn select_fractal_function(fractal_name: &str) -> fn(f64, f64, u32) -> u32 {
@@ -50,7 +53,10 @@ fn select_fractal_function(fractal_name: &str) -> fn(f64, f64, u32) -> u32 {
         "mandelbrot" => mandelbrot,
         "burning_ship" => burning_ship,
         _ => {
-            eprintln!("Unknown fractal type: {}. Using mandelbrot by default.", fractal_name);
+            eprintln!(
+                "Unknown fractal type: {}. Using mandelbrot by default.",
+                fractal_name
+            );
             mandelbrot
         }
     }
@@ -65,8 +71,10 @@ fn main() {
     let fractal_func = select_fractal_function(&args.fractal);
 
     for (x, y, pixel) in img.enumerate_pixels_mut() {
-        let cx = args.center_x + (2.0 * x as f64 - args.width as f64) / (args.height as f64 * args.zoom);
-        let cy = args.center_y + (2.0 * y as f64 - args.height as f64) / (args.height as f64 * args.zoom);
+        let cx =
+            args.center_x + (2.0 * x as f64 - args.width as f64) / (args.height as f64 * args.zoom);
+        let cy = args.center_y
+            + (2.0 * y as f64 - args.height as f64) / (args.height as f64 * args.zoom);
 
         let iter = fractal_func(cx, cy, args.max_iter);
         let intensity = ((args.max_iter - iter) * 255 / args.max_iter) as u8;

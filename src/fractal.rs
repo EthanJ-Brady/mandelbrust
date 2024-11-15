@@ -29,4 +29,3 @@ pub fn burning_ship(cx: f64, cy: f64, max_iter: u32) -> u32 {
 
     iteration
 }
-
