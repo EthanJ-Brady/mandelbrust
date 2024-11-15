@@ -13,7 +13,7 @@ impl FractalTemplates {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct FractalTemplate {
     x: f64,
     y: f64,
@@ -25,4 +25,15 @@ pub fn get_fractal_templates() -> Result<FractalTemplates, Box<dyn std::error::E
     let toml_content = fs::read_to_string("fractal_templates.toml")?;
     let templates: FractalTemplates = toml::from_str(&toml_content)?;
     Ok(templates)
+}
+
+pub fn get_fractal_template(name: &str) -> Option<Vec<FractalTemplate>> {
+    let templates = match get_fractal_templates() {
+        Ok(t) => t,
+        Err(e) => {
+            eprintln!("Error reading fractal_templates.toml: {}", e);
+            return None;
+        }
+    };
+    templates.get(name).cloned()
 }

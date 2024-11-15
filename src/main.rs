@@ -10,7 +10,7 @@ use color::{interpolate_color, parse_color};
 use file::get_filename;
 use fractal::{burning_ship, mandelbrot};
 use image::RgbImage;
-use template::get_fractal_templates;
+use template::get_fractal_template;
 
 fn select_fractal_function(fractal_name: &str) -> fn(f64, f64, u32) -> u32 {
     match fractal_name {
@@ -32,14 +32,7 @@ fn main() {
     let background = parse_color(&args.background);
     let mut img = RgbImage::new(args.width, args.height);
 
-    let templates = match get_fractal_templates() {
-        Ok(t) => t,
-        Err(e) => {
-            eprintln!("Error reading objects.toml: {}", e);
-            return;
-        }
-    };
-    println!("Templates: {:?}", templates.get("mandelbrot"));
+    println!("Templates: {:?}", get_fractal_template("mandelbrot"));
 
     let fractal_func = select_fractal_function(&args.fractal);
 
