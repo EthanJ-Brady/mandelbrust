@@ -11,7 +11,7 @@ use file::get_filename;
 use fractal::{burning_ship, mandelbrot};
 use image::RgbImage;
 use std::fs;
-use template::Config;
+use template::FractalTemplates;
 
 fn select_fractal_function(fractal_name: &str) -> fn(f64, f64, u32) -> u32 {
     match fractal_name {
@@ -27,9 +27,9 @@ fn select_fractal_function(fractal_name: &str) -> fn(f64, f64, u32) -> u32 {
     }
 }
 
-fn read() -> Result<Config, Box<dyn std::error::Error>> {
+fn read() -> Result<FractalTemplates, Box<dyn std::error::Error>> {
     let toml_content = fs::read_to_string("templates.toml")?;
-    let templates: Config = toml::from_str(&toml_content)?;
+    let templates: FractalTemplates = toml::from_str(&toml_content)?;
     Ok(templates)
 }
 
@@ -39,14 +39,14 @@ fn main() {
     let background = parse_color(&args.background);
     let mut img = RgbImage::new(args.width, args.height);
 
-    let config = match read() {
+    let templates = match read() {
         Ok(t) => t,
         Err(e) => {
             eprintln!("Error reading objects.toml: {}", e);
             return;
         }
     };
-    println!("Templates: {:?}", config.templates);
+    println!("Templates: {:?}", templates.get("mandelbrot"));
 
     let fractal_func = select_fractal_function(&args.fractal);
 
