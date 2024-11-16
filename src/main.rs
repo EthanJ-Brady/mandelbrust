@@ -28,6 +28,8 @@ fn select_fractal_function(fractal_name: &str) -> fn(f64, f64, u32) -> u32 {
 
 fn main() {
     let args = Args::parse();
+    args.validate();
+
     let color = parse_color(&args.color);
     let background = parse_color(&args.background);
     let mut img = RgbImage::new(args.width, args.height);
