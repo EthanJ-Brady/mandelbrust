@@ -7,7 +7,7 @@ m = 255
 
 [[templates.spirals]]
 fractal = "mandelbrot"
-x = -0.73
-y = 0.18
+x = -0.7345
+y = 0.181
 z = 250
 m = 255
