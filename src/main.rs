@@ -47,8 +47,6 @@ fn main() {
 
     let mut img = RgbImage::new(args.width, args.height);
 
-    println!("Templates: {:?}", get_fractal_template("mandelbrot"));
-
     let fractal_func = select_fractal_function(&ft.fractal);
 
     for (x, y, pixel) in img.enumerate_pixels_mut() {
