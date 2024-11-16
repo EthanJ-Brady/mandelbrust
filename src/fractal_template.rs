@@ -15,11 +15,11 @@ impl FractalTemplates {
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct FractalTemplate {
-    fractal: String,
-    x: f64,
-    y: f64,
-    z: f64,
-    m: u32,
+    pub fractal: String,
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
+    pub m: u32,
 }
 
 pub fn get_fractal_templates() -> Result<FractalTemplates, Box<dyn std::error::Error>> {

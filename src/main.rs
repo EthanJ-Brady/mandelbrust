@@ -9,7 +9,7 @@ use clap::Parser;
 use color::{interpolate_color, parse_color};
 use file::get_filename;
 use fractal::{burning_ship, mandelbrot};
-use fractal_template::get_fractal_template;
+use fractal_template::{get_fractal_template, FractalTemplate};
 use image::RgbImage;
 
 fn select_fractal_function(fractal_name: &str) -> fn(f64, f64, u32) -> u32 {
@@ -32,20 +32,31 @@ fn main() {
 
     let color = parse_color(&args.color);
     let background = parse_color(&args.background);
+
+    let mut ft = FractalTemplate {
+        fractal: args.fractal.clone(),
+        x: args.center_x,
+        y: args.center_y,
+        z: args.zoom,
+        m: args.max_iter,
+    };
+
+    if let Some(template) = &args.template {
+        ft = get_fractal_template(template).unwrap()[0].clone();
+    }
+
     let mut img = RgbImage::new(args.width, args.height);
 
     println!("Templates: {:?}", get_fractal_template("mandelbrot"));
 
-    let fractal_func = select_fractal_function(&args.fractal);
+    let fractal_func = select_fractal_function(&ft.fractal);
 
     for (x, y, pixel) in img.enumerate_pixels_mut() {
-        let cx =
-            args.center_x + (2.0 * x as f64 - args.width as f64) / (args.height as f64 * args.zoom);
-        let cy = args.center_y
-            + (2.0 * y as f64 - args.height as f64) / (args.height as f64 * args.zoom);
+        let cx = ft.x + (2.0 * x as f64 - args.width as f64) / (args.height as f64 * ft.z);
+        let cy = ft.y + (2.0 * y as f64 - args.height as f64) / (args.height as f64 * ft.z);
 
-        let iter = fractal_func(cx, cy, args.max_iter);
-        let intensity = ((args.max_iter - iter) * 255 / args.max_iter) as u8;
+        let iter = fractal_func(cx, cy, ft.m);
+        let intensity = ((ft.m - iter) * 255 / ft.m) as u8;
         let color = interpolate_color(background, color, intensity as f64 / 255.0);
 
         *pixel = color;
