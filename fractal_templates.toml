@@ -11,3 +11,10 @@ center_x = -0.7345
 center_y = 0.181
 zoom = 250
 max_iter = 255
+
+[[templates.eiffel-tower]]
+fractal = "burning_ship"
+center_x = -1.77
+center_y = -0.03
+zoom = 120
+max_iter = 64
