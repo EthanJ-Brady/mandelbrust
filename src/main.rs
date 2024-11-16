@@ -40,9 +40,11 @@ fn main() {
         z: args.zoom,
         m: args.max_iter,
     };
+    let mut name = args.fractal.clone();
 
     if let Some(template) = &args.template {
         ft = get_fractal_template(template).unwrap()[0].clone();
+        name = args.template.clone().unwrap();
     }
 
     let mut img = RgbImage::new(args.width, args.height);
@@ -60,6 +62,6 @@ fn main() {
         *pixel = color;
     }
 
-    let file_path = get_filename(&args.directory, "test", args.width, args.height);
+    let file_path = get_filename(&args.directory, name, args.width, args.height);
     img.save(file_path).expect("Failed to save image");
 }
