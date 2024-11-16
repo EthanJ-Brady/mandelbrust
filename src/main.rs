@@ -61,6 +61,6 @@ fn main() {
         *pixel = color;
     }
 
-    let file_path = get_filename(&args.directory, name, args.width, args.height);
+    let file_path = get_filename(&args.output, name, args.width, args.height);
     img.save(file_path).expect("Failed to save image");
 }
