@@ -1,13 +1,13 @@
 [[templates.mandelbrot]]
 fractal = "mandelbrot"
-x = -0.5
-y = 0.0
-z = 1.0
-m = 255
+center_x = -0.5
+center_y = 0.0
+zoom = 1.0
+max_iter = 255
 
 [[templates.spirals]]
 fractal = "mandelbrot"
-x = -0.7345
-y = 0.181
-z = 250
-m = 255
+center_x = -0.7345
+center_y = 0.181
+zoom = 250
+max_iter = 255

@@ -35,10 +35,10 @@ fn main() {
 
     let mut ft = FractalTemplate {
         fractal: args.fractal.clone(),
-        x: args.center_x,
-        y: args.center_y,
-        z: args.zoom,
-        m: args.max_iter,
+        center_x: args.center_x,
+        center_y: args.center_y,
+        zoom: args.zoom,
+        max_iter: args.max_iter,
     };
     let mut name = args.fractal.clone();
 
@@ -52,11 +52,13 @@ fn main() {
     let fractal_func = select_fractal_function(&ft.fractal);
 
     for (x, y, pixel) in img.enumerate_pixels_mut() {
-        let cx = ft.x + (2.0 * x as f64 - args.width as f64) / (args.height as f64 * ft.z);
-        let cy = ft.y + (2.0 * y as f64 - args.height as f64) / (args.height as f64 * ft.z);
+        let cx =
+            ft.center_x + (2.0 * x as f64 - args.width as f64) / (args.height as f64 * ft.zoom);
+        let cy =
+            ft.center_y + (2.0 * y as f64 - args.height as f64) / (args.height as f64 * ft.zoom);
 
-        let iter = fractal_func(cx, cy, ft.m);
-        let intensity = ((ft.m - iter) * 255 / ft.m) as u8;
+        let iter = fractal_func(cx, cy, ft.max_iter);
+        let intensity = ((ft.max_iter - iter) * 255 / ft.max_iter) as u8;
         let color = interpolate_color(background, color, intensity as f64 / 255.0);
 
         *pixel = color;
