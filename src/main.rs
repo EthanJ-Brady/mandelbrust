@@ -41,16 +41,13 @@ fn main() {
         max_iter: args.max_iter,
     };
     let mut name = args.fractal.clone();
-
     if let Some(template) = &args.template {
         ft = get_fractal_template(template).unwrap()[0].clone();
         name = args.template.clone().unwrap();
     }
-
-    let mut img = RgbImage::new(args.width, args.height);
-
     let fractal_func = select_fractal_function(&ft.fractal);
 
+    let mut img = RgbImage::new(args.width, args.height);
     for (x, y, pixel) in img.enumerate_pixels_mut() {
         let cx =
             ft.center_x + (2.0 * x as f64 - args.width as f64) / (args.height as f64 * ft.zoom);
